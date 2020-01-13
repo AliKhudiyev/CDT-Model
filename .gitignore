@@ -1,0 +1,7 @@
+# Directories
+.vscode/
+log/
+
+# Files
+*.o
+*.log

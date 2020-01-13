@@ -1,0 +1,42 @@
+[
+{
+  "directory": "/home/ali/Desktop/Projects/CDT/build",
+  "command": "/usr/bin/c++   -I/home/ali/Desktop/Projects/CDT/include  -g   -std=gnu++17 -o CMakeFiles/main.dir/src/main.cpp.o -c /home/ali/Desktop/Projects/CDT/src/main.cpp",
+  "file": "/home/ali/Desktop/Projects/CDT/src/main.cpp"
+},
+{
+  "directory": "/home/ali/Desktop/Projects/CDT/build",
+  "command": "/usr/bin/c++   -I/home/ali/Desktop/Projects/CDT/include  -g   -std=gnu++17 -o CMakeFiles/main.dir/src/matrix.cpp.o -c /home/ali/Desktop/Projects/CDT/src/matrix.cpp",
+  "file": "/home/ali/Desktop/Projects/CDT/src/matrix.cpp"
+},
+{
+  "directory": "/home/ali/Desktop/Projects/CDT/build",
+  "command": "/usr/bin/c++   -I/home/ali/Desktop/Projects/CDT/include  -g   -std=gnu++17 -o CMakeFiles/main.dir/src/shape.cpp.o -c /home/ali/Desktop/Projects/CDT/src/shape.cpp",
+  "file": "/home/ali/Desktop/Projects/CDT/src/shape.cpp"
+},
+{
+  "directory": "/home/ali/Desktop/Projects/CDT/build",
+  "command": "/usr/bin/c++   -I/home/ali/Desktop/Projects/CDT/include  -g   -std=gnu++17 -o CMakeFiles/main.dir/src/dataset.cpp.o -c /home/ali/Desktop/Projects/CDT/src/dataset.cpp",
+  "file": "/home/ali/Desktop/Projects/CDT/src/dataset.cpp"
+},
+{
+  "directory": "/home/ali/Desktop/Projects/CDT/build",
+  "command": "/usr/bin/c++   -I/home/ali/Desktop/Projects/CDT/include  -g   -std=gnu++17 -o CMakeFiles/main.dir/src/layer.cpp.o -c /home/ali/Desktop/Projects/CDT/src/layer.cpp",
+  "file": "/home/ali/Desktop/Projects/CDT/src/layer.cpp"
+},
+{
+  "directory": "/home/ali/Desktop/Projects/CDT/build",
+  "command": "/usr/bin/c++   -I/home/ali/Desktop/Projects/CDT/include  -g   -std=gnu++17 -o CMakeFiles/main.dir/src/cdt.cpp.o -c /home/ali/Desktop/Projects/CDT/src/cdt.cpp",
+  "file": "/home/ali/Desktop/Projects/CDT/src/cdt.cpp"
+},
+{
+  "directory": "/home/ali/Desktop/Projects/CDT/build",
+  "command": "/usr/bin/c++   -I/home/ali/Desktop/Projects/CDT/include  -g   -std=gnu++17 -o CMakeFiles/main.dir/src/activation_function.cpp.o -c /home/ali/Desktop/Projects/CDT/src/activation_function.cpp",
+  "file": "/home/ali/Desktop/Projects/CDT/src/activation_function.cpp"
+},
+{
+  "directory": "/home/ali/Desktop/Projects/CDT/build",
+  "command": "/usr/bin/c++   -I/home/ali/Desktop/Projects/CDT/include  -g   -std=gnu++17 -o CMakeFiles/main.dir/src/utils.cpp.o -c /home/ali/Desktop/Projects/CDT/src/utils.cpp",
+  "file": "/home/ali/Desktop/Projects/CDT/src/utils.cpp"
+}
+]

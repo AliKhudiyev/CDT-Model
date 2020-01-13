@@ -1,0 +1,3 @@
+/home/ali/Desktop/Projects/CDT/build/CMakeFiles/rebuild_cache.dir
+/home/ali/Desktop/Projects/CDT/build/CMakeFiles/main.dir
+/home/ali/Desktop/Projects/CDT/build/CMakeFiles/edit_cache.dir

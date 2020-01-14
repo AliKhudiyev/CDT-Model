@@ -1,4 +1,5 @@
 #include "dataset.hpp"
+#include "utils.hpp"
 
 #include <ctime>
 #include <cstdlib>
@@ -86,6 +87,15 @@ Shape DataSet::shape() const{
 
 bool DataSet::empty() const{
     return (m_matrix.shape().n_row==0);
+}
+
+double DataSet::biased(){
+    double bias=min(*this)+1;
+    for(unsigned i=0;i<m_matrix.shape().n_row;++i){
+        for(unsigned j=0;j<m_matrix.shape().n_col-1;++j)
+            m_matrix[i][j]+=bias;
+    }
+    return bias;
 }
 
 void DataSet::load(const std::string& filepath, const ReadInfo& info){

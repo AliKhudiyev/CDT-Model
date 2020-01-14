@@ -26,5 +26,5 @@ void Layer::compile(unsigned row){
     m_outputs.reshape(1, row);
     m_weights.reshape(m_shape);
 
-    m_weights.initialize(-0.1, 0.1);
+    m_weights.initialize(1, 2);
 }

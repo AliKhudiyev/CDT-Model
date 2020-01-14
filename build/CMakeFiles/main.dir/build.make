@@ -135,18 +135,18 @@ CMakeFiles/main.dir/src/cdt.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/cdt.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ali/Desktop/Projects/CDT/src/cdt.cpp -o CMakeFiles/main.dir/src/cdt.cpp.s
 
-CMakeFiles/main.dir/src/activation_function.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/src/activation_function.cpp.o: ../src/activation_function.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ali/Desktop/Projects/CDT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/main.dir/src/activation_function.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/main.dir/src/activation_function.cpp.o -c /home/ali/Desktop/Projects/CDT/src/activation_function.cpp
+CMakeFiles/main.dir/src/activation.cpp.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/activation.cpp.o: ../src/activation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ali/Desktop/Projects/CDT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/main.dir/src/activation.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/main.dir/src/activation.cpp.o -c /home/ali/Desktop/Projects/CDT/src/activation.cpp
 
-CMakeFiles/main.dir/src/activation_function.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.dir/src/activation_function.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ali/Desktop/Projects/CDT/src/activation_function.cpp > CMakeFiles/main.dir/src/activation_function.cpp.i
+CMakeFiles/main.dir/src/activation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.dir/src/activation.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ali/Desktop/Projects/CDT/src/activation.cpp > CMakeFiles/main.dir/src/activation.cpp.i
 
-CMakeFiles/main.dir/src/activation_function.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/activation_function.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ali/Desktop/Projects/CDT/src/activation_function.cpp -o CMakeFiles/main.dir/src/activation_function.cpp.s
+CMakeFiles/main.dir/src/activation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/activation.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ali/Desktop/Projects/CDT/src/activation.cpp -o CMakeFiles/main.dir/src/activation.cpp.s
 
 CMakeFiles/main.dir/src/utils.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/utils.cpp.o: ../src/utils.cpp
@@ -169,7 +169,7 @@ main_OBJECTS = \
 "CMakeFiles/main.dir/src/dataset.cpp.o" \
 "CMakeFiles/main.dir/src/layer.cpp.o" \
 "CMakeFiles/main.dir/src/cdt.cpp.o" \
-"CMakeFiles/main.dir/src/activation_function.cpp.o" \
+"CMakeFiles/main.dir/src/activation.cpp.o" \
 "CMakeFiles/main.dir/src/utils.cpp.o"
 
 # External object files for target main
@@ -181,7 +181,7 @@ main: CMakeFiles/main.dir/src/shape.cpp.o
 main: CMakeFiles/main.dir/src/dataset.cpp.o
 main: CMakeFiles/main.dir/src/layer.cpp.o
 main: CMakeFiles/main.dir/src/cdt.cpp.o
-main: CMakeFiles/main.dir/src/activation_function.cpp.o
+main: CMakeFiles/main.dir/src/activation.cpp.o
 main: CMakeFiles/main.dir/src/utils.cpp.o
 main: CMakeFiles/main.dir/build.make
 main: CMakeFiles/main.dir/link.txt

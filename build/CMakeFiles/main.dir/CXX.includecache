@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-../include/activation_function.h
+../include/activation.hpp
 vector
 -
 
@@ -15,8 +15,10 @@ layer.hpp
 ../include/layer.hpp
 dataset.hpp
 ../include/dataset.hpp
-activation_function.h
-../include/activation_function.h
+activation.hpp
+../include/activation.hpp
+utils.hpp
+../include/utils.hpp
 
 ../include/dataset.hpp
 fstream
@@ -53,8 +55,10 @@ iostream
 -
 
 ../include/utils.hpp
-cdt.hpp
-../include/cdt.hpp
+vector
+-
+string
+-
 
 ../src/matrix.cpp
 matrix.hpp

@@ -65,6 +65,8 @@ class DataSet{
     Shape shape() const;
     bool empty() const;
 
+    double biased();
+
     void load(const std::string& filepath, const ReadInfo& info=DataSet::m_read_info);
     void load(const Matrix_d& matrix, unsigned beg_row=0, unsigned end_row=0);
     void save(const std::string& filepath, const WriteInfo& info=DataSet::m_write_info) const;

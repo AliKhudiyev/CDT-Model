@@ -12,7 +12,7 @@ SET(SRC
     src/dataset.cpp 
     src/layer.cpp 
     src/cdt.cpp 
-    src/activation_function.cpp
+    src/activation.cpp
     src/utils.cpp)
 
 include_directories(include)

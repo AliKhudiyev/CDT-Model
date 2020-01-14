@@ -31,8 +31,8 @@
 },
 {
   "directory": "/home/ali/Desktop/Projects/CDT/build",
-  "command": "/usr/bin/c++   -I/home/ali/Desktop/Projects/CDT/include  -g   -std=gnu++17 -o CMakeFiles/main.dir/src/activation_function.cpp.o -c /home/ali/Desktop/Projects/CDT/src/activation_function.cpp",
-  "file": "/home/ali/Desktop/Projects/CDT/src/activation_function.cpp"
+  "command": "/usr/bin/c++   -I/home/ali/Desktop/Projects/CDT/include  -g   -std=gnu++17 -o CMakeFiles/main.dir/src/activation.cpp.o -c /home/ali/Desktop/Projects/CDT/src/activation.cpp",
+  "file": "/home/ali/Desktop/Projects/CDT/src/activation.cpp"
 },
 {
   "directory": "/home/ali/Desktop/Projects/CDT/build",

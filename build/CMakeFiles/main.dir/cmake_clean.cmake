@@ -5,7 +5,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/main.dir/src/dataset.cpp.o"
   "CMakeFiles/main.dir/src/layer.cpp.o"
   "CMakeFiles/main.dir/src/cdt.cpp.o"
-  "CMakeFiles/main.dir/src/activation_function.cpp.o"
+  "CMakeFiles/main.dir/src/activation.cpp.o"
   "CMakeFiles/main.dir/src/utils.cpp.o"
   "main.pdb"
   "main"

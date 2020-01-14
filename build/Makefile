@@ -123,32 +123,32 @@ main/fast:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
-src/activation_function.o: src/activation_function.cpp.o
+src/activation.o: src/activation.cpp.o
 
-.PHONY : src/activation_function.o
+.PHONY : src/activation.o
 
 # target to build an object file
-src/activation_function.cpp.o:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/activation_function.cpp.o
-.PHONY : src/activation_function.cpp.o
+src/activation.cpp.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/activation.cpp.o
+.PHONY : src/activation.cpp.o
 
-src/activation_function.i: src/activation_function.cpp.i
+src/activation.i: src/activation.cpp.i
 
-.PHONY : src/activation_function.i
+.PHONY : src/activation.i
 
 # target to preprocess a source file
-src/activation_function.cpp.i:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/activation_function.cpp.i
-.PHONY : src/activation_function.cpp.i
+src/activation.cpp.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/activation.cpp.i
+.PHONY : src/activation.cpp.i
 
-src/activation_function.s: src/activation_function.cpp.s
+src/activation.s: src/activation.cpp.s
 
-.PHONY : src/activation_function.s
+.PHONY : src/activation.s
 
 # target to generate assembly for a file
-src/activation_function.cpp.s:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/activation_function.cpp.s
-.PHONY : src/activation_function.cpp.s
+src/activation.cpp.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/activation.cpp.s
+.PHONY : src/activation.cpp.s
 
 src/cdt.o: src/cdt.cpp.o
 
@@ -348,9 +348,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... main"
 	@echo "... edit_cache"
-	@echo "... src/activation_function.o"
-	@echo "... src/activation_function.i"
-	@echo "... src/activation_function.s"
+	@echo "... src/activation.o"
+	@echo "... src/activation.i"
+	@echo "... src/activation.s"
 	@echo "... src/cdt.o"
 	@echo "... src/cdt.i"
 	@echo "... src/cdt.s"

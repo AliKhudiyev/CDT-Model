@@ -25,12 +25,15 @@ int main(){
 
     // datasets[1].save("new.csv", WRITE(000));
 
-    DataSet dataset(EXAMPLE("example.csv"), READ(00011));
+    DataSet dataset(EXAMPLE("xor.csv"), READ(01011));
+    dataset.biased();
+    dataset.shuffle();
+    cout<<dataset<<'\n';
 
     CDT model(dataset, 2);
     model.compile();
-
-    cout<<model;
+    model.train();
+    // cout<<model;
 
     return 0;
 }

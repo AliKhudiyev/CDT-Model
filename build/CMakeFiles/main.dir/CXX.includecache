@@ -59,6 +59,8 @@ vector
 -
 string
 -
+matrix.hpp
+../include/matrix.hpp
 
 ../src/matrix.cpp
 matrix.hpp

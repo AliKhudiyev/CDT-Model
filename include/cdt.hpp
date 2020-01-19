@@ -23,6 +23,7 @@ class CDT{
 
     void train();
     void train(const DataSet& dataset);
+    void fit(const DataSet& dataset);
     double predict(const std::vector<double>& inputs) const;
     std::vector<double> predict(const Matrix_d& input_matrix) const;
     std::string label(const std::vector<double>& inputs) const;

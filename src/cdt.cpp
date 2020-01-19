@@ -50,7 +50,83 @@ void CDT::train(const DataSet& dataset){
     train();
 }
 
+void CDT::fit(const DataSet& dataset){
+    m_dataset=dataset;
+    Matrix_d mat=dataset.matrix();
+    dc_sort(mat, 0, 0, mat.shape().n_row-1);
+    m_input=mat.compile(0, mat.shape().n_col-1);
+    m_output=mat.compile(mat.shape().n_col-1, mat.shape().n_col);
+    std::cout<<"dc sort:\n"<<m_input<<'\n'<<m_output<<'\n';
+
+    std::vector<double> keys;
+    for(unsigned i=0;i<m_input.shape().n_row;++i){
+        // keys.push_back(m_input[i][0]);
+        keys.push_back(0.);
+    }
+
+    m_layers[0].m_weights[0][0]=1.;
+    for(unsigned i=0;i<m_input.shape().n_col-1;++i){
+        double& weight=m_layers[0].m_weights[0][i+1];
+        for(unsigned t=0;t<m_input.shape().n_row;++t){
+            keys[t]+=m_layers[0].m_weights[0][i]*m_input[t][i];
+        }
+        for(unsigned j=0;j<m_input.shape().n_row-1;++j){
+            if(keys[j]<keys[j+1] &&
+               m_input[j][i+1]>m_input[j+1][i+1]){
+                   double tmp;
+                   tmp=(keys[j+1]-keys[j])/m_input[j][i+1];
+                   if(weight>tmp) weight=tmp;
+               }
+        }
+    }
+    unsigned col=m_input.shape().n_col;
+    for(unsigned i=0;i<m_input.shape().n_row;++i){
+        keys[i]+=m_layers[0].m_weights[0][col-1]*m_input[i][col-1];
+    }
+
+    std::cout<<"Updated weights: ";
+    for(unsigned i=0;i<m_layers[0].m_weights.shape().n_col;++i){
+        std::cout<<m_layers[0].m_weights[0][i]<<"\t";
+    }   std::cout<<'\n';
+
+    std::cout<<"Keys: ";
+    for(unsigned i=0;i<keys.size();++i){
+        std::cout<<keys[i]<<"\t";
+    }   std::cout<<'\n';
+
+    double beg=0, end;
+    double output=m_output[0][0];
+    for(unsigned i=1;i<keys.size();++i){
+        std::cout<<" dbg output: "<<output<<'\n';
+        if(m_output[beg][0]==0.){
+            output=m_output[++beg][0];
+            continue;
+        }
+        if(output!=m_output[i][0]){
+            end=i;
+            Func_Param param;
+            param.amplitude=output;
+            param.confidence=4;
+            param.length=(keys[end]-keys[beg])/2.;
+            param.middle=keys[beg];
+            std::cout<<" > mid: "<<param.middle<<'\n';
+            std::cout<<" > length: "<<param.length<<'\n';
+            std::cout<<" > amp: "<<param.amplitude<<"\n";
+            m_function.add(param);
+            beg=end;
+            output=m_output[i][0];
+            std::cout<<" dbg diff output: "<<output<<"\n\n";
+        }
+    }
+}
+
 double CDT::predict(const std::vector<double>& inputs) const{
+    std::cout<<"Prediction for (";
+    for(unsigned i=0;i<inputs.size();++i){
+        std::cout<<inputs[i]<<" ";
+    }
+    std::cout<<"): ";
+
     return feed_forward(inputs);
 }
 
@@ -101,15 +177,19 @@ void CDT::save(const std::string& filepath) const{
 }
 
 double CDT::feed_forward(const std::vector<double>& inputs) const{
-    double output;
-    ;
+    double key=0., output;
+    
+    for(unsigned i=0;i<inputs.size();++i){
+        key+=m_layers[0].m_weights.get(0,i)*inputs[i];
+    }
+    output=m_function.run(key);
+
     return output;
 }
 
 void CDT::adjust_weights(unsigned cindex){
     if(m_cdt_indices.size()<2) return;
     
-    double semi_keys[2];
     std::vector<unsigned> cdt_indices;
 
     // std::cout<<" dbg > cdt indices: ";
@@ -144,7 +224,7 @@ void CDT::adjust_weights(unsigned cindex){
                 double tmp_weight;
                 tmp_weight=(m_input[cdt_indices[i+1]][j]-m_input[cdt_indices[i]][j]);
                 tmp_weight/=m_input[cdt_indices[i]][j+1];
-                tmp_weights.push_back(tmp_weight/2.0);
+                tmp_weights.push_back(tmp_weight);
                 // std::cout<<" dbg tmp weight: "<<tmp_weights[tmp_weights.size()-1]<<" ? "<<m_layers[0].m_weights[0][j+1]<<'\n';
             } else{
                 tmp_weights.push_back(10.);

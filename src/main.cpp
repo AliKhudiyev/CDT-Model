@@ -32,7 +32,19 @@ int main(){
 
     CDT model(dataset, 2);
     model.compile();
-    model.train();
+    // model.train();
+    model.fit(dataset);
+
+    double x;
+    vector<double> inps(2);
+    unsigned i=0;
+    while(cin>>x){
+        inps[i++]=x;
+        if(i==2){
+            i=0;
+            cout<<model.predict(inps)<<'\n';
+        }
+    }
     // cout<<model;
 
     return 0;

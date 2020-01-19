@@ -1,6 +1,6 @@
 # CDT-Model
 
-**Clustered Data Tree - Model** is an artificial neural network model which consists of only one hidden layer with a single perceptron.
+**Clustered Data Table - Model** is an artificial neural network model which consists of only one hidden layer with a single perceptron.
 Although common artificial neural networks with a single perceptron are not able to learn the data which are not linearly seperable
 such as _XOr problem_ this model can learn any type of data. The way it does so, is to adjust activation functions of output nodes and dynamically update weights according some mathematical formula.
 
@@ -15,6 +15,7 @@ using namespace std;
 int main(int argc, char* argv[]){
 
     DataSet xor("xor.csv");
+    xor.shuffle();
     vector<DataSet> datasets=xor.split({70,30});
 
     CDT model;

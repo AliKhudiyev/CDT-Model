@@ -26,7 +26,6 @@ int main(){
     // datasets[1].save("new.csv", WRITE(000));
 
     DataSet dataset(EXAMPLE("xor.csv"), READ(01011));
-    dataset.biased();
     dataset.shuffle();
     cout<<dataset<<'\n';
 
@@ -35,6 +34,7 @@ int main(){
     // model.train();
     model.fit(dataset);
 
+    cout<<"\n > Testing stage:\n";
     double x;
     vector<double> inps(2);
     unsigned i=0;

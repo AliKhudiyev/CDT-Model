@@ -60,5 +60,5 @@ double Activation::run(double input) const{
 }
 
 double gate(const Func_Param& param, double input){
-    return param.amplitude/(pow(input-param.middle, 2*param.confidence)/param.length+1);
+    return param.amplitude/(pow((input-param.middle)/param.length, 2*param.confidence)+1);
 }

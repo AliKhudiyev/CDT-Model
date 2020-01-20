@@ -90,7 +90,10 @@ bool DataSet::empty() const{
 }
 
 double DataSet::biased(){
-    double bias=min(*this)+1;
+    double bias=-1*min(*this)+1;
+
+    if(bias<1) return 0.;
+
     for(unsigned i=0;i<m_matrix.shape().n_row;++i){
         for(unsigned j=0;j<m_matrix.shape().n_col-1;++j)
             m_matrix[i][j]+=bias;

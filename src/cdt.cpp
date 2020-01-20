@@ -52,11 +52,13 @@ void CDT::train(const DataSet& dataset){
 
 void CDT::fit(const DataSet& dataset){
     m_dataset=dataset;
-    Matrix_d mat=dataset.matrix();
+    double bias=m_dataset.biased();
+    Matrix_d mat=m_dataset.matrix();
+
     dc_sort(mat, 0, 0, mat.shape().n_row-1);
     m_input=mat.compile(0, mat.shape().n_col-1);
     m_output=mat.compile(mat.shape().n_col-1, mat.shape().n_col);
-    std::cout<<"dc sort:\n"<<m_input<<'\n'<<m_output<<'\n';
+    // std::cout<<"dc sort:\n"<<m_input<<'\n'<<m_output<<'\n';
 
     std::vector<double> keys;
     for(unsigned i=0;i<m_input.shape().n_row;++i){
@@ -94,6 +96,17 @@ void CDT::fit(const DataSet& dataset){
         std::cout<<keys[i]<<"\t";
     }   std::cout<<'\n';
 
+    // Normalizing keys
+    double key_bias=0.;
+    for(unsigned i=0;i<keys.size();++i){
+        key_bias+=m_layers[0].m_weights[0][i]*bias;
+    }
+    for(unsigned i=0;i<keys.size();++i){
+        keys[i]-=key_bias;
+    }
+
+    std::cout<<"Key bias: "<<key_bias<<'\n';
+
     double beg=0, end;
     double output=m_output[0][0];
     for(unsigned i=1;i<keys.size();++i){
@@ -105,10 +118,22 @@ void CDT::fit(const DataSet& dataset){
         if(output!=m_output[i][0]){
             end=i;
             Func_Param param;
+            if(beg==0){
+                double diff=keys[end]-keys[end-1];
+                param.middle=(keys[end]-keys[beg])/2.;
+                param.length=param.middle-(keys[beg]-diff);
+            }
+            else{
+                double diff1=(keys[beg]-keys[beg-1])/2.;
+                double diff2=(keys[end]-keys[end-1])/2.;
+                std::cout<<" diff1: "<<diff1<<", diff2: "<<diff2<<'\n';
+                std::cout<<" beg: "<<beg<<", end: "<<end-1<<'\n';
+                std::cout<<" beg key: "<<keys[beg]<<", end key: "<<keys[end-1]<<'\n';
+                param.middle=(keys[end-1]+keys[beg]+diff2-diff1)/2.;
+                param.length=param.middle-(keys[beg]-diff1);
+            }
             param.amplitude=output;
             param.confidence=4;
-            param.length=(keys[end]-keys[beg])/2.;
-            param.middle=keys[beg];
             std::cout<<" > mid: "<<param.middle<<'\n';
             std::cout<<" > length: "<<param.length<<'\n';
             std::cout<<" > amp: "<<param.amplitude<<"\n";

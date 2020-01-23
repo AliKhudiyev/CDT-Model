@@ -1,18 +1,23 @@
 #include "cdt.hpp"
 
-CDT::CDT(const DataSet& dataset, unsigned n_input){
-    set(dataset, n_input);
+#include <cmath>
+
+CDT::CDT(const DataSet& dataset, unsigned n_input, bool dc_sort){
+    set(dataset, n_input, dc_sort);
+    m_function.m_optimization=Optimization{NO_FIT, HALF, 5};
 }
 
 CDT::~CDT(){}
 
-void CDT::set(const DataSet& dataset, unsigned n_input){
+void CDT::set(const DataSet& dataset, unsigned n_input, bool dc_sort){
     m_dataset=dataset;
     m_layers.resize(3);
     
     unsigned n_output=dataset.shape().n_col-n_input;
+    m_info.bias=m_dataset.biased();
+    if(dc_sort) m_dataset.dc_sort();
 
-    std::vector<Matrix_d> matrices=dataset.compile(n_output);
+    std::vector<Matrix_d> matrices=m_dataset.compile(n_output);
     m_input=matrices[0];
     m_output=matrices[1];
 }
@@ -50,22 +55,17 @@ void CDT::train(const DataSet& dataset){
     train();
 }
 
-void CDT::fit(const DataSet& dataset){
-    m_dataset=dataset;
-    double bias=m_dataset.biased();
+void CDT::fit(){
+    double bias=m_info.bias;
     Matrix_d mat=m_dataset.matrix();
+    std::cout<<"Dataset bias: "<<bias<<'\n';
 
-    dc_sort(mat, 0, 0, mat.shape().n_row-1);
-    m_input=mat.compile(0, mat.shape().n_col-1);
-    m_output=mat.compile(mat.shape().n_col-1, mat.shape().n_col);
     // std::cout<<"dc sort:\n"<<m_input<<'\n'<<m_output<<'\n';
 
     std::vector<double> keys;
-    for(unsigned i=0;i<m_input.shape().n_row;++i){
-        // keys.push_back(m_input[i][0]);
+    for(unsigned i=0;i<m_input.shape().n_row;++i)
         keys.push_back(0.);
-    }
-
+    
     m_layers[0].m_weights[0][0]=1.;
     for(unsigned i=0;i<m_input.shape().n_col-1;++i){
         double& weight=m_layers[0].m_weights[0][i+1];
@@ -91,10 +91,10 @@ void CDT::fit(const DataSet& dataset){
         std::cout<<m_layers[0].m_weights[0][i]<<"\t";
     }   std::cout<<'\n';
 
-    std::cout<<"Keys: ";
-    for(unsigned i=0;i<keys.size();++i){
-        std::cout<<keys[i]<<"\t";
-    }   std::cout<<'\n';
+    // std::cout<<"Keys: ";
+    // for(unsigned i=0;i<keys.size();++i){
+    //     std::cout<<keys[i]<<"\t";
+    // }   std::cout<<'\n';
 
     // Normalizing keys
     double key_bias=0.;
@@ -107,50 +107,36 @@ void CDT::fit(const DataSet& dataset){
 
     std::cout<<"Key bias: "<<key_bias<<'\n';
 
-    double beg=0, end;
-    double output=m_output[0][0];
-    for(unsigned i=1;i<keys.size();++i){
-        std::cout<<" dbg output: "<<output<<'\n';
-        if(m_output[beg][0]==0.){
-            output=m_output[++beg][0];
-            continue;
-        }
-        if(output!=m_output[i][0]){
+    std::cout<<" > Initializing intervals...\n";
+    
+    std::vector<Interval> intervals;
+    double beg=0, end, output=m_output[0][0];
+    for(unsigned i=0;i<keys.size();++i){
+        if(m_output[i][0]==output){
             end=i;
-            Func_Param param;
-            if(beg==0){
-                double diff=keys[end]-keys[end-1];
-                param.middle=(keys[end]-keys[beg])/2.;
-                param.length=param.middle-(keys[beg]-diff);
-            }
-            else{
-                double diff1=(keys[beg]-keys[beg-1])/2.;
-                double diff2=(keys[end]-keys[end-1])/2.;
-                std::cout<<" diff1: "<<diff1<<", diff2: "<<diff2<<'\n';
-                std::cout<<" beg: "<<beg<<", end: "<<end-1<<'\n';
-                std::cout<<" beg key: "<<keys[beg]<<", end key: "<<keys[end-1]<<'\n';
-                param.middle=(keys[end-1]+keys[beg]+diff2-diff1)/2.;
-                param.length=param.middle-(keys[beg]-diff1);
-            }
-            param.amplitude=output;
-            param.confidence=4;
-            std::cout<<" > mid: "<<param.middle<<'\n';
-            std::cout<<" > length: "<<param.length<<'\n';
-            std::cout<<" > amp: "<<param.amplitude<<"\n";
-            m_function.add(param);
-            beg=end;
-            output=m_output[i][0];
-            std::cout<<" dbg diff output: "<<output<<"\n\n";
+        }
+        else{
+            // std::cout<<" dbg int: "<<keys[beg]<<", "<<keys[end]<<", "<<output<<'\n';
+            intervals.emplace_back(keys[beg], keys[end], output);
+            
+            beg=++end;
+            output=m_output[beg][0];
+        }
+
+        if(i==keys.size()-1){
+            // std::cout<<" dbg int: "<<keys[beg]<<", "<<keys[end]<<", "<<output<<'\n';
+            intervals.emplace_back(keys[beg], keys[end], output);
         }
     }
+    m_function.initialize(intervals);
 }
 
 double CDT::predict(const std::vector<double>& inputs) const{
-    std::cout<<"Prediction for (";
-    for(unsigned i=0;i<inputs.size();++i){
-        std::cout<<inputs[i]<<" ";
-    }
-    std::cout<<"): ";
+    // std::cout<<"Prediction for (";
+    // for(unsigned i=0;i<inputs.size();++i){
+    //     std::cout<<inputs[i]<<" ";
+    // }
+    // std::cout<<"): ";
 
     return feed_forward(inputs);
 }
@@ -173,6 +159,23 @@ std::vector<std::string> CDT::labels(const Matrix_d& input_matrix) const{
     for(unsigned i=0;i<input_matrix.shape().n_row;++i)
         labels.push_back(label(input_matrix.get(i)));
     return labels;
+}
+
+void CDT::test(std::ostream& out, const DataSet& dataset) const{
+    unsigned all_guesses=dataset.shape().n_row;
+    unsigned right_guesses=0;
+
+    std::vector<Matrix_d> matrices=dataset.compile();
+    for(unsigned i=0;i<all_guesses;++i){
+        double output=predict(matrices[0][i]);
+        if(ceil(output)-output<0.5) output=ceil(output);
+        else output=floor(output);
+        // std::cout<<" : "<<output<<" vs "<<matrices[1][i][0]<<'\n';
+        if(output==matrices[1][i][0])
+            ++right_guesses;
+    }
+
+    out<<"Accuracy: "<<(double)right_guesses/all_guesses<<'\n';
 }
 
 void CDT::load(const std::string& filepath){
@@ -265,9 +268,7 @@ void CDT::adjust_weights(unsigned cindex){
 void CDT::adjust_weights(){
     unsigned cdt_index;
     for(unsigned i=0;i<m_input.shape().n_row;++i){
-        // std::cout<<" : "<<m_input[i][0]<<", "<<m_input[i][1]<<'\n';
         cdt_index=insert(i);
-        // std::cout<<" dbg cdt index: "<<cdt_index<<'\n';
         adjust_weights(cdt_index);
     }
 }
@@ -276,9 +277,12 @@ void CDT::adjust_activation(){
     ;
 }
 
+void CDT::optimize(const Optimization& optimization){
+    m_function.m_optimization=optimization;
+}
+
 unsigned CDT::insert(unsigned index){
     if(!index){
-        // std::cout<<" dbg initial insertion with inserted index: 0\n";
         m_cdt_indices.push_back(index);
         return 0;
     }
@@ -288,11 +292,8 @@ unsigned CDT::insert(unsigned index){
 
     for(unsigned i=0;i<m_cdt_indices.size();++i){
         for(unsigned j=0;j<m_input.shape().n_col;++j){
-            // std::cout<<" dbg ("<<i<<","<<j<<") versus: "<<inputs[j]<<" and "<<m_input[m_cdt_indices[i]][j]<<'\n';
             if(inputs[j]<m_input[m_cdt_indices[i]][j]){
-                // std::cout<<" > versus accepted!\n";
                 cdt_index=i;
-                // i=m_input.shape().n_row;
                 i=m_cdt_indices.size();
                 break;
             }
@@ -301,7 +302,7 @@ unsigned CDT::insert(unsigned index){
         }
     }
     m_cdt_indices.insert(m_cdt_indices.begin()+cdt_index, index);
-    // std::cout<<" dbg inserted index: "<<index<<'\n';
+
     return cdt_index;
 }
 

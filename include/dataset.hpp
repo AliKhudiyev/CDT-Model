@@ -5,6 +5,8 @@
 #include <sstream>
 #include <string>
 #include <initializer_list>
+#include <utility>
+#include <algorithm>
 
 #include "matrix.hpp"
 
@@ -65,6 +67,7 @@ class DataSet{
     Shape shape() const;
     bool empty() const;
 
+    void dc_sort();
     double biased();
 
     void load(const std::string& filepath, const ReadInfo& info=DataSet::m_read_info);
@@ -76,6 +79,8 @@ class DataSet{
     private:
     static ReadInfo m_read_info;
     static WriteInfo m_write_info;
+
+    void recursive_sort(unsigned col, unsigned beg_row, unsigned end_row);
 };
 
 std::ostream& operator<<(std::ostream& out, const DataSet& dataset);

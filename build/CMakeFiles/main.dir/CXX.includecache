@@ -17,6 +17,8 @@ dataset.hpp
 ../include/dataset.hpp
 activation.hpp
 ../include/activation.hpp
+metrics.h
+../include/metrics.h
 utils.hpp
 ../include/utils.hpp
 
@@ -28,6 +30,10 @@ sstream
 string
 -
 initializer_list
+-
+utility
+-
+algorithm
 -
 matrix.hpp
 ../include/matrix.hpp
@@ -49,6 +55,8 @@ shape.hpp
 ../include/shape.hpp
 ../src/matrix.cpp
 ../src/matrix.cpp
+
+../include/metrics.h
 
 ../include/shape.hpp
 iostream
@@ -72,7 +80,15 @@ fstream
 sstream
 -
 
-/home/ali/Desktop/Projects/CDT/src/cdt.cpp
+/home/ali/Desktop/Projects/CDT/src/main.cpp
+iostream
+-
+matrix.hpp
+/home/ali/Desktop/Projects/CDT/src/matrix.hpp
+dataset.hpp
+/home/ali/Desktop/Projects/CDT/src/dataset.hpp
 cdt.hpp
 /home/ali/Desktop/Projects/CDT/src/cdt.hpp
+utils.hpp
+/home/ali/Desktop/Projects/CDT/src/utils.hpp
 

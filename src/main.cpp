@@ -25,26 +25,32 @@ int main(){
 
     // datasets[1].save("new.csv", WRITE(000));
 
-    DataSet dataset(EXAMPLE("xor.csv"), READ(01011));
+    DataSet dataset(EXAMPLE("IRIS.csv"), READ(01011));
     dataset.shuffle();
-    cout<<dataset<<'\n';
 
-    CDT model(dataset, 2);
+    std::vector<DataSet> datasets=dataset.split({70,30});
+    cout<<datasets[1]<<'\n';
+
+    CDT model(datasets[0], 4, true);
+    model.optimize(Optimization{NO_FIT, THIRD, 5});
     model.compile();
     // model.train();
-    model.fit(dataset);
+    model.fit();
 
-    cout<<"\n > Testing stage:\n";
-    double x;
-    vector<double> inps(2);
-    unsigned i=0;
-    while(cin>>x){
-        inps[i++]=x;
-        if(i==2){
-            i=0;
-            cout<<model.predict(inps)<<'\n';
-        }
-    }
+    // cout<<"\n > Testing stage:\n";
+    // double x;
+    // unsigned dim=dataset.shape().n_col-1;
+    // vector<double> inps(dim);
+    // unsigned i=0;
+    // while(cin>>x){
+    //     inps[i++]=x;
+    //     if(i==dim){
+    //         i=0;
+    //         cout<<model.predict(inps)<<'\n';
+    //     }
+    // }
+    model.test(cout, datasets[0]);
+    model.test(cout, datasets[1]);
     // cout<<model;
 
     return 0;

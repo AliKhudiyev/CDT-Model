@@ -89,6 +89,10 @@ bool DataSet::empty() const{
     return (m_matrix.shape().n_row==0);
 }
 
+void DataSet::dc_sort(){
+    recursive_sort(0, 0, m_matrix.shape().n_row);
+}
+
 double DataSet::biased(){
     double bias=-1*min(*this)+1;
 
@@ -202,6 +206,17 @@ void DataSet::save(const std::string& filepath, const WriteInfo& info) const{
     }
 
     file.close();
+}
+
+void DataSet::recursive_sort(unsigned col, unsigned beg_row, unsigned end_row){
+    if(col>=m_matrix.shape().n_col || beg_row>=end_row) return ;
+
+    sort_column(m_matrix, col, beg_row, end_row);
+    for(;beg_row<end_row && col<m_matrix.shape().n_col-1;){
+        unsigned tmp_end_row=diff_index(m_matrix, col, beg_row, end_row);
+        recursive_sort(col+1, beg_row, tmp_end_row);
+        beg_row=tmp_end_row;
+    }
 }
 
 std::ostream& operator<<(std::ostream& out, const DataSet& dataset){

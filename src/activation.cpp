@@ -5,6 +5,36 @@
 
 Activation::~Activation(){}
 
+void Activation::initialize(const std::vector<Interval>& intervals){
+    Func_Param param;
+    double left_diff, right_diff;
+
+    for(unsigned i=0;i<intervals.size()-1;++i){
+        // std::cout<<" > Interval: "<<intervals[i].beg_key<<", "<<intervals[i].end_key<<" - "<<intervals[i].output<<'\n';
+        if(intervals[i].output==0) continue;
+
+        param.amplitude=intervals[i].output;
+        param.confidence=m_optimization.confidence;
+
+        if(i==0){
+            left_diff=right_diff=(intervals[i+1].beg_key-intervals[i].end_key)/(double)(m_optimization.split_dist);
+        }
+        else if(i<intervals.size()-1){
+            left_diff=(intervals[i].beg_key-intervals[i-1].end_key)/(double)m_optimization.split_dist;
+            right_diff=(intervals[i+1].beg_key-intervals[i].end_key)/(double)m_optimization.split_dist;
+        }
+        else{
+            left_diff=right_diff=(intervals[i].beg_key-intervals[i-1].end_key)/(double)(m_optimization.split_dist);
+        }
+        param.middle=(intervals[i].beg_key-left_diff+intervals[i].end_key+right_diff)/2.;
+        param.length=param.middle-(intervals[i].beg_key-left_diff);
+    
+        // std::cout<<" dbg left/right diff: "<<left_diff<<"/"<<right_diff<<'\n';
+        // std::cout<<" > param: "<<param.middle<<", "<<param.length<<", "<<param.amplitude<<", "<<param.confidence<<'\n';
+        m_params.push_back(param);
+    }
+}
+
 void Activation::add(const Func_Param& param){
     m_params.push_back(param);
 }
@@ -55,10 +85,10 @@ void Activation::clear(){
 double Activation::run(double input) const{
     double result=0.;
     for(const auto& param: m_params)
-        result+=gate(param, input);
+        result+=Activation::gate(param, input);
     return result;
 }
 
-double gate(const Func_Param& param, double input){
+double Activation::gate(const Func_Param& param, double input){
     return param.amplitude/(pow((input-param.middle)/param.length, 2*param.confidence)+1);
 }

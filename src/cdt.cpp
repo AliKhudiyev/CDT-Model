@@ -91,21 +91,26 @@ void CDT::fit(){
         std::cout<<m_layers[0].m_weights[0][i]<<"\t";
     }   std::cout<<'\n';
 
+    // Normalizing keys
     // std::cout<<"Keys: ";
     // for(unsigned i=0;i<keys.size();++i){
     //     std::cout<<keys[i]<<"\t";
-    // }   std::cout<<'\n';
+    // } std::cout<<'\n';
 
-    // Normalizing keys
     double key_bias=0.;
-    for(unsigned i=0;i<keys.size();++i){
+    for(unsigned i=0;i<m_layers[0].m_weights[0].size();++i){
+        // std::cout<<" |> +"<<m_layers[0].m_weights[0][i]<<" * "<<bias<<'\n';
         key_bias+=m_layers[0].m_weights[0][i]*bias;
     }
     for(unsigned i=0;i<keys.size();++i){
         keys[i]-=key_bias;
     }
-
+    
     std::cout<<"Key bias: "<<key_bias<<'\n';
+    // std::cout<<"Keys: ";
+    // for(unsigned i=0;i<keys.size();++i){
+    //     std::cout<<keys[i]<<"\t";
+    // }   std::cout<<'\n';
 
     std::cout<<" > Initializing intervals...\n";
     
@@ -128,6 +133,7 @@ void CDT::fit(){
             intervals.emplace_back(keys[beg], keys[end], output);
         }
     }
+    std::cout<<"Overfit rate: "<<intervals.size()/(double)m_dataset.shape().n_row<<'\n';
     m_function.initialize(intervals);
 }
 
@@ -168,11 +174,13 @@ void CDT::test(std::ostream& out, const DataSet& dataset) const{
     std::vector<Matrix_d> matrices=dataset.compile();
     for(unsigned i=0;i<all_guesses;++i){
         double output=predict(matrices[0][i]);
+        // std::cout<<" : "<<output<<" vs "<<matrices[1][i][0]<<'\n';
         if(ceil(output)-output<0.5) output=ceil(output);
         else output=floor(output);
-        // std::cout<<" : "<<output<<" vs "<<matrices[1][i][0]<<'\n';
-        if(output==matrices[1][i][0])
+        if(abs(output-matrices[1][i][0])<0.00001){
+            // std::cout<<"+\n";
             ++right_guesses;
+        }
     }
 
     out<<"Accuracy: "<<(double)right_guesses/all_guesses<<'\n';
@@ -210,6 +218,7 @@ double CDT::feed_forward(const std::vector<double>& inputs) const{
     for(unsigned i=0;i<inputs.size();++i){
         key+=m_layers[0].m_weights.get(0,i)*inputs[i];
     }
+    // std::cout<<" : key: "<<key<<'\n';
     output=m_function.run(key);
 
     return output;

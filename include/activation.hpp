@@ -47,7 +47,7 @@ struct Optimization{
 class Activation{
     friend class CDT;
 
-    private:
+    public: // -> make private
     std::vector<Func_Param> m_params;
     Optimization m_optimization;
 

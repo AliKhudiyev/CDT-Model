@@ -17,6 +17,8 @@ class CDT{
     DataSet m_dataset;
     std::vector<Layer> m_layers;
     Matrix_d m_input, m_output;
+    
+    public:
     Activation m_function;
     Metrics m_metrics;
     Info m_info;

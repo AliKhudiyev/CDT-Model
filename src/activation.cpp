@@ -9,7 +9,7 @@ void Activation::initialize(const std::vector<Interval>& intervals){
     Func_Param param;
     double left_diff, right_diff;
 
-    for(unsigned i=0;i<intervals.size()-1;++i){
+    for(unsigned i=0;i<intervals.size();++i){
         // std::cout<<" > Interval: "<<intervals[i].beg_key<<", "<<intervals[i].end_key<<" - "<<intervals[i].output<<'\n';
         if(intervals[i].output==0) continue;
 
